@@ -122,6 +122,10 @@ The tool also saves all structured results into an easy-to-parse JSON file insid
 
 ---
 
+<img width="1786" height="423" alt="image" src="https://github.com/user-attachments/assets/84dcb4e3-22d7-4b7b-814f-b49c557b1b46" />
+
+<img width="1769" height="770" alt="Screenshot 2026-04-01 214810" src="https://github.com/user-attachments/assets/c552abc2-da91-427a-b19b-31e038b18e0f" />
+
 ## Legal Disclaimer
 
 **Only use this tool on systems you explicitly own or have explicit, written permission to test.**
